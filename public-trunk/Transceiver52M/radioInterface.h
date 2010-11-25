@@ -142,7 +142,7 @@ private:
   unsigned sendCursor;
 
   short rcvBuffer[2*2*OUTCHUNK];
-  unsigned rcvCursor;
+  unsigned rcvCursor; ///< in 2-byte samples
  
   bool underrun;			      ///< indicates writes to USRP are too slow
   bool overrun;				      ///< indicates reads from USRP are too slow

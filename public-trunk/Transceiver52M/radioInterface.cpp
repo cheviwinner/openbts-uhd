@@ -272,8 +272,8 @@ void RadioInterface::driveReceiveRadio() {
   GSM::Time rcvClock = mClock.get();
   rcvClock.decTN(receiveOffset);
   unsigned tN = rcvClock.TN();
-  int rcvSz = rcvCursor/2;
-  int readSz = 0;
+  int rcvSz = rcvCursor/2; // in 4-byte samples (I/Q pairs)
+  int readSz = 0; // in 4-byte samples (I/Q pairs)
   const int symbolsPerSlot = gSlotLen + 8;
 
   // while there's enough data in receive buffer, form received 
