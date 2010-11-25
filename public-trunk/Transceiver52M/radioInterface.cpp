@@ -293,7 +293,7 @@ void RadioInterface::driveReceiveRadio() {
     //if (mReceiveFIFO.size() >= 16) mReceiveFIFO.wait(8);
     LOG(DEBUG) << "receiveFIFO: wrote radio vector at time: " << mClock.get() << ", new size: " << mReceiveFIFO.size() ;
     readSz += (symbolsPerSlot+(tN % 4 == 0))*samplesPerSymbol;
-    rcvSz -= (symbolsPerSlot+(tN % 4 == 0))*samplesPerSymbol;
+    rcvSz  -= (symbolsPerSlot+(tN % 4 == 0))*samplesPerSymbol;
 
     tN = rcvClock.TN();
   }
