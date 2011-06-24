@@ -1,0 +1,15 @@
+GNU C++ version 4.5.3 20110311 (prerelease); Boost_104500; UHD_003.001.000-e829a26
+
+Linux version 2.6.38 (balister@octopus) (gcc version 4.5.3 20110223 (prerelease) (GCC) ) #1 PREEMPT Fri May 13 15:33:35 EDT 2011
+
+filename:       /lib/modules/2.6.38/kernel/drivers/misc/usrp_e.ko
+license:        GPL v2
+author:         Philip Balister <philip@opensdr.com>
+description:    usrp_e
+alias:          usrp_e
+version:        0.2
+srcversion:     C95640F14A5715ACE28E715
+depends:        
+vermagic:       2.6.38 preempt mod_unload modversions ARMv7 
+
+OpenBTS-UHD-6d34bace
