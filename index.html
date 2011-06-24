@@ -4,74 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 
   <head>
-    <title>OpenBTS USRP2 support</title>
+    <meta HTTP-EQUIV="REFRESH" content="0; url=http://gnuradio.org/redmine/projects/gnuradio/wiki/OpenBTSUHD">
   </head>
 
 <body>
-<p>
-<h3>OpenBTS USRP2 support</h3>
-<pre>
-11/17/2010 07:09 AM
-
-I'm announcing the availability of USRP2 support with OpenBTS. The
-patch set consists of a new device implementation that uses the UHD
-driver from Ettus Research and allows the use of an external 10MHz
-reference clock. Additional implementation details can be found in the
-comments and commit log.
-
-Download:
-
-git clone git://github.com/ttsou/openbts-uhd.git
-
-git clone http://github.com/ttsou/openbts-uhd.git
-
-http://github.com/ttsou/openbts-uhd/tarball/master
-
-GitHub:
-
-http://github.com/ttsou/openbts-uhd
-
-Build:
-
-USRP2 support requires the UHD driver and firmware. GNU Radio is not required.
-
-http://ettus-apps.sourcerepo.com/redmine/ettus/projects/uhd/wiki
-
-./bootstrap
-./configure --with-uhd
-make
-
-Without the '--with-uhd' option, the standard USRP1 implementation
-will be built.
-
-Release Notes:
-
-*The USRP2 is clocked at 100MHz and does not output fractional sample
-rates, so only the non-52M Transceiver is available.
-
-*Tested with a single WBX board, which is capable of operation on all
-4 GSM bands. Other boards should work, but are untested.
-
-*Operation in the upper bands (1800, 1900MHz) requires an external
-reference for reliable operation. This is true to a lesser extent in
-the lower bands as well.
-
-External Reference Clock:
-
-The front panel 10MHz reference input of the USRP2 can be used to
-improve stability of the internal oscillator (~20 ppm). To test
-frequency offset, a modified version of Kalibrate -
-http://thre.at/kalibrate - is available. Information and examples for
-the UHD development branch can be found here.
-
-http://ttsou.github.com/kalibrate-uhd
-
-That's about it. Hopefully, a number of people will find this useful.
-Let me know if you have any questions. Comments and feedback are
-always welcome.
-
- Thomas
-</pre>
-</p>
 </body>
 </html>
