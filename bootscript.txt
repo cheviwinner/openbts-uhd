@@ -1,0 +1,3 @@
+setenv mmcargs 'setenv bootargs console=${console} mem=126M video=${videospec},mode:${videomode} root=/dev/mmcblk0p2 rw rootfstype=ext3 rootwait'
+setenv bootcmd 'mmc init; run loaduimage; run mmcboot'
+boot
