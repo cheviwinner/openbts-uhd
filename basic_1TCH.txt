@@ -1,0 +1,39 @@
+CPU: CPU with timer interrupt, speed 0 MHz (estimated)
+Profiling through timer interrupt
+          TIMER:0|
+  samples|      %|
+------------------
+    62026 42.5025 no-vmlinux
+    34968 23.9614 transceiver
+	          TIMER:0|
+	  samples|      %|
+	------------------
+	    33542 95.9220 transceiver
+	     1426  4.0780 [vectors] (tgid:432 range:0xffff0000-0xffff1000)
+    17928 12.2849 libc-2.12.2.so
+    12502  8.5668 OpenBTS
+	          TIMER:0|
+	  samples|      %|
+	------------------
+	    12274 98.1763 OpenBTS
+	      228  1.8237 [vectors] (tgid:431 range:0xffff0000-0xffff1000)
+     7801  5.3455 libstdc++.so.6.0.14
+     4531  3.1048 libuhd.so.003.002
+     2788  1.9104 libpthread-2.12.2.so
+     1093  0.7490 libm-2.12.2.so
+      849  0.5818 libgcc_s.so.1
+      474  0.3248 asterisk
+	          TIMER:0|
+	  samples|      %|
+	------------------
+	      461 97.2574 asterisk
+	       13  2.7426 [vectors] (tgid:386 range:0xffff0000-0xffff1000)
+      435  0.2981 libortp.so.8.0.0
+      398  0.2727 libboost_thread.so.1.45.0
+       67  0.0459 chan_sip.so
+       45  0.0308 oprofiled
+       17  0.0116 app_echo.so
+        9  0.0062 ld-2.12.2.so
+        2  0.0014 dropbearmulti
+        1 6.9e-04 busybox
+        1 6.9e-04 grep.grep
