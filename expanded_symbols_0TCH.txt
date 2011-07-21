@@ -1,0 +1,219 @@
+CPU: CPU with timer interrupt, speed 0 MHz (estimated)
+Profiling through timer interrupt
+samples  %        image name               app name                 symbol name
+89816    74.8236  no-vmlinux               no-vmlinux               /no-vmlinux
+4440      3.6989  libstdc++.so.6.0.14      libstdc++.so.6.0.14      /usr/lib/libstdc++.so.6.0.14
+2922      2.4342  transceiver              transceiver              RadioInterface::radioifyVector(signalVector&, short*, float, bool)
+1954      1.6278  libc-2.12.2.so           libc-2.12.2.so           memcpy
+1740      1.4496  libc-2.12.2.so           libc-2.12.2.so           malloc
+1565      1.3038  transceiver              transceiver              gLoggingLevel(char const*)
+1356      1.1297  transceiver              transceiver              RadioInterface::unRadioifyVector(short*, signalVector&)
+1272      1.0597  libc-2.12.2.so           libc-2.12.2.so           _int_malloc
+1048      0.8731  libc-2.12.2.so           libc-2.12.2.so           free
+1041      0.8672  libc-2.12.2.so           libc-2.12.2.so           memcmp
+1026      0.8547  [vectors] (tgid:10946 range:0xffff0000-0xffff1000) transceiver              [vectors] (tgid:10946 range:0xffff0000-0xffff1000)
+751       0.6256  libc-2.12.2.so           libc-2.12.2.so           _int_free
+712       0.5932  transceiver              transceiver              energyDetect(signalVector&, unsigned int, float, float*)
+704       0.5865  transceiver              transceiver              RadioInterface::driveReceiveRadio()
+594       0.4948  libuhd.so.003.001        libuhd.so.003.001        convert_item32_1_to_sc16_1_nswap(uhd::ref_vector<void const*> const&, uhd::ref_vector<void*> const&, unsigned int)
+546       0.4549  libuhd.so.003.001        libuhd.so.003.001        convert_sc16_1_to_item32_1_nswap(uhd::ref_vector<void const*> const&, uhd::ref_vector<void*> const&, unsigned int)
+528       0.4399  libgcc_s.so.1            libgcc_s.so.1            /lib/libgcc_s.so.1
+429       0.3574  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_mutex_lock
+322       0.2683  libpthread-2.12.2.so     libpthread-2.12.2.so     __pthread_mutex_unlock_usercnt
+308       0.2566  transceiver              transceiver              ConfigurationTable::defines(std::string const&) const
+293       0.2441  transceiver              transceiver              ConfigurationTable::getStr(std::string const&) const
+291       0.2424  libboost_thread.so.1.45.0 libboost_thread.so.1.45.0 /usr/lib/libboost_thread.so.1.45.0
+262       0.2183  libc-2.12.2.so           libc-2.12.2.so           malloc_consolidate
+254       0.2116  transceiver              transceiver              Transceiver::pullRadioVector(GSM::Time&, int&, int&)
+236       0.1966  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_impl::recv(uhd::ref_vector<void*> const&, unsigned int, uhd::rx_metadata_t&, uhd::io_type_t const&, uhd::device::recv_mode_t, double)
+221       0.1841  transceiver              transceiver              convolve(signalVector const*, signalVector const*, signalVector*, ConvType, unsigned int, unsigned int)
+192       0.1600  libc-2.12.2.so           libc-2.12.2.so           strlen
+185       0.1541  libc-2.12.2.so           libc-2.12.2.so           Laligned
+177       0.1475  transceiver              transceiver              gLookupLevel(char const*)
+165       0.1375  libc-2.12.2.so           libc-2.12.2.so           strcmp
+148       0.1233  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_impl::send(uhd::ref_vector<void const*> const&, unsigned int, uhd::tx_metadata_t const&, uhd::io_type_t const&, uhd::device::send_mode_t, double)
+148       0.1233  transceiver              transceiver              Transceiver::driveTransmitFIFO()
+146       0.1216  transceiver              transceiver              uhd_device::readSamples(short*, int, bool*, unsigned long long, bool*, unsigned int*)
+137       0.1141  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_cond_signal@@GLIBC_2.4
+131       0.1091  libuhd.so.003.001        libuhd.so.003.001        uhd::transport::vrt::if_hdr_unpack_le(unsigned int const*, uhd::transport::vrt::if_packet_info_t&)
+120       0.1000  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_impl::io_impl::get_recv_buffs(std::vector<boost::intrusive_ptr<uhd::transport::managed_recv_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_recv_buffer> > >&)
+119       0.0991  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_cond_timedwait@@GLIBC_2.4
+106       0.0883  transceiver              transceiver              GMSKRotate(signalVector&)
+102       0.0850  libuhd.so.003.001        libuhd.so.003.001        bool boost::condition_variable_any::timed_wait<boost::unique_lock<boost::mutex>, boost::posix_time::time_duration, boost::function<bool ()()> >(boost::unique_lock<boost::mutex>&, boost::posix_time::time_duration const&, boost::function<bool ()()>)
+98        0.0816  transceiver              transceiver              Transceiver::pushRadioVector(GSM::Time&)
+90        0.0750  transceiver              transceiver              uhd_device::writeSamples(short*, int, bool*, unsigned long long, bool)
+89        0.0741  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_once
+89        0.0741  transceiver              transceiver              scaleVector(signalVector&, Complex<float>)
+88        0.0733  libc-2.12.2.so           libc-2.12.2.so           __offtime
+83        0.0691  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_getspecific
+81        0.0675  transceiver              transceiver              VectorQueue::getStaleBurst(GSM::Time const&)
+78        0.0650  transceiver              transceiver              Transceiver::driveReceiveFIFO()
+77        0.0641  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_impl::get_recv_buff(double)
+75        0.0625  libuhd.so.003.001        libuhd.so.003.001        uhd::time_spec_t::get_tick_count(double) const
+75        0.0625  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_impl::io_impl::recv_pirate_loop(boost::barrier&, boost::shared_ptr<usrp_e100_clock_ctrl>)
+73        0.0608  libc-2.12.2.so           libc-2.12.2.so           poll
+73        0.0608  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_impl::io_impl::get_send_buffs(std::vector<boost::intrusive_ptr<uhd::transport::managed_send_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_send_buffer> > >&)
+67        0.0558  libuhd.so.003.001        libuhd.so.003.001        bool boost::condition_variable_any::timed_wait<boost::unique_lock<boost::mutex> >(boost::unique_lock<boost::mutex>&, boost::posix_time::ptime const&)
+67        0.0558  transceiver              transceiver              Transceiver::expectedCorrType(GSM::Time)
+65        0.0541  libc-2.12.2.so           libc-2.12.2.so           __tz_convert
+64        0.0533  libuhd.so.003.001        libuhd.so.003.001        multi_usrp_impl::get_device()
+61        0.0508  libuhd.so.003.001        libuhd.so.003.001        uhd::transport::vrt::if_hdr_pack_le(unsigned int*, uhd::transport::vrt::if_packet_info_t&)
+58        0.0483  libpthread-2.12.2.so     libpthread-2.12.2.so     write
+56        0.0467  libuhd.so.003.001        libuhd.so.003.001        uhd::convert::get_converter_cpu_to_otw(uhd::io_type_t const&, uhd::otw_type_t const&, unsigned int, unsigned int)
+50        0.0417  libpthread-2.12.2.so     libpthread-2.12.2.so     __pthread_enable_asynccancel
+50        0.0417  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_mutex_unlock
+49        0.0408  libpthread-2.12.2.so     libpthread-2.12.2.so     __pthread_disable_asynccancel
+49        0.0408  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_testcancel
+48        0.0400  transceiver              transceiver              PointerFIFO::get()
+46        0.0383  transceiver              transceiver              FIFOServiceLoopAdapter(Transceiver*)
+44        0.0367  libm-2.12.2.so           libm-2.12.2.so           floor
+44        0.0367  transceiver              transceiver              RadioInterface::pullBuffer()
+39        0.0325  transceiver              transceiver              GSM::FNDelta(int, int)
+39        0.0325  transceiver              transceiver              convert_time(unsigned long long, double)
+39        0.0325  transceiver              transceiver              modulateBurst(BitVector const&, signalVector const&, int, int)
+38        0.0317  libuhd.so.003.001        libuhd.so.003.001        uhd::convert::get_converter_otw_to_cpu(uhd::io_type_t const&, uhd::otw_type_t const&, unsigned int, unsigned int)
+38        0.0317  libuhd.so.003.001        libuhd.so.003.001        uhd::time_spec_t::time_spec_t(double)
+38        0.0317  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_impl::get_send_buff(double)
+38        0.0317  transceiver              transceiver              RadioInterface::pushBuffer()
+37        0.0308  transceiver              transceiver              PointerFIFO::allocate()
+36        0.0300  libc-2.12.2.so           libc-2.12.2.so           Llastword
+36        0.0300  transceiver              transceiver              RadioInterface::driveTransmitRadio(signalVector&, bool)
+35        0.0292  libuhd.so.003.001        libuhd.so.003.001        uhd::time_spec_t::get_full_secs() const
+34        0.0283  libc-2.12.2.so           libc-2.12.2.so           __libc_disable_asynccancel
+34        0.0283  transceiver              transceiver              PointerFIFO::put(void*)
+33        0.0275  libc-2.12.2.so           libc-2.12.2.so           compute_change
+33        0.0275  libc-2.12.2.so           libc-2.12.2.so           tzset_internal
+32        0.0267  libuhd.so.003.001        libuhd.so.003.001        uhd::io_type_t::io_type_t(uhd::io_type_t::tid_t)
+30        0.0250  transceiver              transceiver              sinLookup(float)
+29        0.0242  libuhd.so.003.001        libuhd.so.003.001        uhd::time_spec_t::get_frac_secs() const
+29        0.0242  transceiver              transceiver              uhd_device::check_rx_md_err(uhd::rx_metadata_t&, int)
+28        0.0233  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::functor_manager<void (*)(unsigned int*, uhd::transport::vrt::if_packet_info_t&)>::manage(boost::detail::function::function_buffer const&, boost::detail::function::function_buffer&, boost::detail::function::functor_manager_operation_type)
+27        0.0225  OpenBTS                  OpenBTS                  gLoggingLevel(char const*)
+26        0.0217  libc-2.12.2.so           libc-2.12.2.so           gettimeofday
+25        0.0208  libuhd.so.003.001        libuhd.so.003.001        uhd::operator<(uhd::time_spec_t const&, uhd::time_spec_t const&)
+25        0.0208  transceiver              transceiver              VectorQueue::getCurrentBurst(GSM::Time const&)
+24        0.0200  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::function_obj_invoker0<boost::_bi::bind_t<bool, boost::_mfi::cmf0<bool, uhd::transport::(anonymous namespace)::bounded_buffer_detail<boost::intrusive_ptr<uhd::transport::managed_recv_buffer> > >, boost::_bi::list1<boost::_bi::value<uhd::transport::(anonymous namespace)::bounded_buffer_detail<boost::intrusive_ptr<uhd::transport::managed_recv_buffer> >*> > >, bool>::invoke(boost::detail::function::function_buffer&)
+24        0.0200  transceiver              transceiver              Transceiver::addRadioVector(BitVector&, int, GSM::Time&)
+23        0.0192  libpthread-2.12.2.so     libpthread-2.12.2.so     __pthread_mutex_cond_lock
+22        0.0183  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_clock_ctrl_impl::get_fpga_clock_rate()
+21        0.0175  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::functor_manager<void (*)(unsigned int const*, uhd::transport::vrt::if_packet_info_t&)>::manage(boost::detail::function::function_buffer const&, boost::detail::function::function_buffer&, boost::detail::function::functor_manager_operation_type)
+21        0.0175  libuhd.so.003.001        libuhd.so.003.001        std::vector<void*, std::allocator<void*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<void**, std::vector<void*, std::allocator<void*> > >, unsigned int, void* const&)
+20        0.0167  transceiver              transceiver              smpl_buf::avail_smpls(unsigned long long) const
+19        0.0158  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::void_function_invoker3<void (*)(uhd::ref_vector<void const*> const&, uhd::ref_vector<void*> const&, unsigned int), void, uhd::ref_vector<void const*> const&, uhd::ref_vector<void*> const&, unsigned int>::invoke(boost::detail::function::function_buffer&, uhd::ref_vector<void const*> const&, uhd::ref_vector<void*> const&, unsigned int)
+19        0.0158  libuhd.so.003.001        libuhd.so.003.001        uhd::time_spec_t::time_spec_t(long, long, double)
+19        0.0158  transceiver              transceiver              Transceiver::driveTransmitPriorityQueue()
+18        0.0150  libortp.so.8.0.0         libortp.so.8.0.0         /usr/lib/libortp.so.8.0.0
+18        0.0150  transceiver              transceiver              smpl_buf::write(void*, unsigned int, unsigned long long)
+17        0.0142  libc-2.12.2.so           libc-2.12.2.so           __libc_enable_asynccancel
+17        0.0142  libc-2.12.2.so           libc-2.12.2.so           __tz_compute
+17        0.0142  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_msb::commit(unsigned int)
+16        0.0133  OpenBTS                  OpenBTS                  ConfigurationTable::defines(std::string const&) const
+16        0.0133  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::has_empty_target(...)
+16        0.0133  libuhd.so.003.001        libuhd.so.003.001        std::vector<void const*, std::allocator<void const*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<void const**, std::vector<void const*, std::allocator<void const*> > >, unsigned int, void const* const&)
+15        0.0125  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::function_obj_invoker1<boost::_bi::bind_t<bool, boost::_mfi::mf1<bool, usrp_e100_impl::io_impl, std::vector<boost::intrusive_ptr<uhd::transport::managed_recv_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_recv_buffer> > >&>, boost::_bi::list2<boost::_bi::value<usrp_e100_impl::io_impl*>, boost::arg<1> > >, bool, std::vector<boost::intrusive_ptr<uhd::transport::managed_recv_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_recv_buffer> > >&>::invoke(boost::detail::function::function_buffer&, std::vector<boost::intrusive_ptr<uhd::transport::managed_recv_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_recv_buffer> > >&)
+15        0.0125  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::function_obj_invoker1<boost::_bi::bind_t<bool, boost::_mfi::mf1<bool, usrp_e100_impl::io_impl, std::vector<boost::intrusive_ptr<uhd::transport::managed_send_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_send_buffer> > >&>, boost::_bi::list2<boost::_bi::value<usrp_e100_impl::io_impl*>, boost::arg<1> > >, bool, std::vector<boost::intrusive_ptr<uhd::transport::managed_send_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_send_buffer> > >&>::invoke(boost::detail::function::function_buffer&, std::vector<boost::intrusive_ptr<uhd::transport::managed_send_buffer>, std::allocator<boost::intrusive_ptr<uhd::transport::managed_send_buffer> > >&)
+15        0.0125  oprofiled                oprofiled                /usr/bin/oprofiled
+15        0.0125  transceiver              transceiver              convert_time(uhd::time_spec_t, double)
+14        0.0117  libpthread-2.12.2.so     libpthread-2.12.2.so     _pthread_cleanup_pop
+13        0.0108  OpenBTS                  OpenBTS                  ConfigurationTable::getStr(std::string const&) const
+13        0.0108  libc-2.12.2.so           libc-2.12.2.so           memset
+13        0.0108  libuhd.so.003.001        libuhd.so.003.001        _ZN5boost4bindIv14usrp_e100_impljPS1_NS_3argILi1EEEEENS_3_bi6bind_tIT_NS_4_mfi3mf1IS7_T0_T1_EENS5_9list_av_2IT2_T3_E4typeEEEMSA_FS7_SB_ESE_SF_.clone.160
+12        0.0100  [vectors] (tgid:10945 range:0xffff0000-0xffff1000) OpenBTS                  [vectors] (tgid:10945 range:0xffff0000-0xffff1000)
+12        0.0100  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_mrb::release()
+12        0.0100  transceiver              transceiver              _ZSt13__adjust_heapIN9__gnu_cxx17__normal_iteratorIPP11radioVectorSt6vectorIS3_SaIS3_EEEEiS3_14PointerCompareIS2_EEvT_T0_SC_T1_T2_.clone.37
+12        0.0100  transceiver              transceiver              smpl_buf::read(void*, unsigned int, unsigned long long)
+11        0.0092  libm-2.12.2.so           libm-2.12.2.so           __ieee754_pow
+11        0.0092  libm-2.12.2.so           libm-2.12.2.so           powl
+10        0.0083  OpenBTS                  OpenBTS                  GSM::XCCHL1Encoder::interleave()
+10        0.0083  libuhd.so.003.001        libuhd.so.003.001        boost::date_time::c_time::gmtime(long const*, tm*)
+9         0.0075  libc-2.12.2.so           libc-2.12.2.so           memmove
+9         0.0075  libuhd.so.003.001        libuhd.so.003.001        uhd::transport::(anonymous namespace)::bounded_buffer_detail<boost::intrusive_ptr<uhd::transport::managed_recv_buffer> >::not_empty() const
+9         0.0075  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_mrb::get_size() const
+9         0.0075  transceiver              transceiver              sinc(float)
+8         0.0067  transceiver              transceiver              DatagramSocket::read(char*)
+8         0.0067  transceiver              transceiver              PointerFIFO::release(ListNode*)
+8         0.0067  transceiver              transceiver              interpolatePoint(signalVector const&, float)
+8         0.0067  transceiver              transceiver              smpl_buf::write(void*, unsigned int, uhd::time_spec_t)
+7         0.0058  OpenBTS                  OpenBTS                  BitVector::encode(ViterbiR2O4 const&, BitVector&)
+7         0.0058  OpenBTS                  OpenBTS                  GSM::L1Encoder::resync()
+7         0.0058  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::void_function_invoker2<void (*)(unsigned int*, uhd::transport::vrt::if_packet_info_t&), void, unsigned int*, uhd::transport::vrt::if_packet_info_t&>::invoke(boost::detail::function::function_buffer&, unsigned int*, uhd::transport::vrt::if_packet_info_t&)
+7         0.0058  libuhd.so.003.001        libuhd.so.003.001        uhd::tx_metadata_t::tx_metadata_t()
+7         0.0058  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_impl::get_max_send_samps_per_packet() const
+6         0.0050  OpenBTS                  OpenBTS                  GSM::Clock::FN() const
+6         0.0050  libc-2.12.2.so           libc-2.12.2.so           gmtime_r
+6         0.0050  libc-2.12.2.so           libc-2.12.2.so           nanosleep
+6         0.0050  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_mrb::get_buff() const
+6         0.0050  transceiver              transceiver              GSM::FNCompare(int, int)
+5         0.0042  OpenBTS                  OpenBTS                  ARFCNManager::writeHighSide(GSM::TxBurst const&)
+5         0.0042  OpenBTS                  OpenBTS                  GSM::L1Encoder::rollForward()
+5         0.0042  OpenBTS                  OpenBTS                  gLookupLevel(char const*)
+5         0.0042  libc-2.12.2.so           libc-2.12.2.so           usleep
+5         0.0042  libm-2.12.2.so           libm-2.12.2.so           __ieee754_exp
+5         0.0042  libpthread-2.12.2.so     libpthread-2.12.2.so     _pthread_cleanup_push
+5         0.0042  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_impl::get_num_send_frames() const
+5         0.0042  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_msb::get_buff() const
+4         0.0033  OpenBTS                  OpenBTS                  GSM::TCHFACCHL1Encoder::dispatch()
+4         0.0033  OpenBTS                  OpenBTS                  GSM::XCCHL1Encoder::transmit()
+4         0.0033  OpenBTS                  OpenBTS                  Timeval::future(unsigned int)
+4         0.0033  OpenBTS                  OpenBTS                  gWriteGSMTAP(unsigned int, unsigned int, unsigned int, GSM::TypeAndOffset, bool, bool, BitVector const&)
+4         0.0033  libc-2.12.2.so           libc-2.12.2.so           __nss_hostname_digits_dots
+4         0.0033  libuhd.so.003.001        libuhd.so.003.001        boost::detail::function::void_function_invoker2<void (*)(unsigned int const*, uhd::transport::vrt::if_packet_info_t&), void, unsigned int const*, uhd::transport::vrt::if_packet_info_t&>::invoke(boost::detail::function::function_buffer&, unsigned int const*, uhd::transport::vrt::if_packet_info_t&)
+4         0.0033  libuhd.so.003.001        libuhd.so.003.001        uhd::otw_type_t::get_sample_size() const
+4         0.0033  transceiver              transceiver              analyzeTrafficBurst(signalVector&, unsigned int, float, int, Complex<float>*, float*, unsigned int, bool, signalVector**, float*)
+3         0.0025  OpenBTS                  OpenBTS                  BitVector::pack(unsigned char*) const
+3         0.0025  OpenBTS                  OpenBTS                  GSM::FNDelta(int, int)
+3         0.0025  busybox                  busybox                  /bin/busybox
+3         0.0025  libc-2.12.2.so           libc-2.12.2.so           _IO_vfscanf
+3         0.0025  libc-2.12.2.so           libc-2.12.2.so           ____strtoul_l_internal
+3         0.0025  libpthread-2.12.2.so     libpthread-2.12.2.so     pthread_cond_broadcast@@GLIBC_2.4
+3         0.0025  libuhd.so.003.001        libuhd.so.003.001        usrp_e100_mmap_zero_copy_impl::get_num_recv_frames() const
+3         0.0025  transceiver              transceiver              TransmitPriorityQueueServiceLoopAdapter(Transceiver*)
+2         0.0017  OpenBTS                  OpenBTS                  BitVector::LSB8MSB()
+2         0.0017  OpenBTS                  OpenBTS                  BitVector::peekField(unsigned int, unsigned int) const
+2         0.0017  OpenBTS                  OpenBTS                  BitVector::reverse8()
+2         0.0017  OpenBTS                  OpenBTS                  DatagramSocket::write(char const*, unsigned int)
+2         0.0017  OpenBTS                  OpenBTS                  GSM::GeneratorL1Encoder::serviceLoop()
+2         0.0017  OpenBTS                  OpenBTS                  GSM::L1FEC::active() const
+2         0.0017  OpenBTS                  OpenBTS                  UDPSocket::addressSize() const
+2         0.0017  OpenBTS                  OpenBTS                  resolveAddress(sockaddr_in*, char const*, unsigned short)
+2         0.0017  ld-2.12.2.so             ld-2.12.2.so             __tls_get_addr
+2         0.0017  libavahi-common.so.3.5.1 libavahi-common.so.3.5.1 /usr/lib/libavahi-common.so.3.5.1
+2         0.0017  libc-2.12.2.so           libc-2.12.2.so           __errno_location
+2         0.0017  libc-2.12.2.so           libc-2.12.2.so           select
+2         0.0017  libc-2.12.2.so           libc-2.12.2.so           strtol
+2         0.0017  libm-2.12.2.so           libm-2.12.2.so           isnanl
+2         0.0017  libpthread-2.12.2.so     libpthread-2.12.2.so     __h_errno_location
+2         0.0017  libpthread-2.12.2.so     libpthread-2.12.2.so     recvfrom
+2         0.0017  libpthread-2.12.2.so     libpthread-2.12.2.so     sendto
+1        8.3e-04  OpenBTS                  OpenBTS                  ARFCNManager::driveRx()
+1        8.3e-04  OpenBTS                  OpenBTS                  BitVector::fillField(unsigned int, unsigned long long, unsigned int)
+1        8.3e-04  OpenBTS                  OpenBTS                  BitVector::writeField(unsigned int&, unsigned long long, unsigned int)
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::BCCHL1Encoder::generate()
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::Clock::set(GSM::Time const&)
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::L1Encoder::active() const
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::L1Encoder::waitToSend() const
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::NDCCHL1Encoder::serviceLoop()
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::PowerManager::internalControlStep()
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::TCHFACCHL1EncoderRoutine(GSM::TCHFACCHL1Encoder*)
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::XCCHL1Encoder::sendFrame(GSM::L2Frame const&)
+1        8.3e-04  OpenBTS                  OpenBTS                  GSM::Z100Timer::expired() const
+1        8.3e-04  OpenBTS                  OpenBTS                  Parity::writeParityWord(BitVector const&, BitVector&, bool)
+1        8.3e-04  OpenBTS                  OpenBTS                  UDPSocket::destination(unsigned short, char const*)
+1        8.3e-04  asterisk                 asterisk                 /usr/sbin/asterisk
+1        8.3e-04  ld-2.12.2.so             ld-2.12.2.so             do_lookup_x
+1        8.3e-04  libavahi-core.so.6.0.1   libavahi-core.so.6.0.1   /usr/lib/libavahi-core.so.6.0.1
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           _IO_default_xsputn
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           ____strtol_l_internal
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           __libc_sigaction
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           __res_maybe_init
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           __sigsetjmp
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           __xstat
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           strncmp
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           vfprintf
+1        8.3e-04  libc-2.12.2.so           libc-2.12.2.so           vsprintf
+1        8.3e-04  libm-2.12.2.so           libm-2.12.2.so           floorf
+1        8.3e-04  libm-2.12.2.so           libm-2.12.2.so           roundf
+1        8.3e-04  libpthread-2.12.2.so     libpthread-2.12.2.so     nanosleep
+1        8.3e-04  pbx_spool.so             pbx_spool.so             /usr/lib/asterisk/modules/pbx_spool.so
+1        8.3e-04  transceiver              transceiver              peakDetect(signalVector const&, float*, float*)
+1        8.3e-04  transceiver              transceiver              uhd_device::recv_async_msg()
