@@ -45,10 +45,12 @@ namespace GSM {
 class CCCHLogicalChannel;
 class SDCCHLogicalChannel;
 class TCHFACCHLogicalChannel;
+class PDTCHLogicalChannel;
 
 class CCCHList : public std::vector<CCCHLogicalChannel*> {};
 class SDCCHList : public std::vector<SDCCHLogicalChannel*> {};
 class TCHList : public std::vector<TCHFACCHLogicalChannel*> {};
+class PDTCHList : public std::vector<PDTCHLogicalChannel*> {};
 
 /**
 	This object carries the top-level GSM air interface configuration.
@@ -75,6 +77,7 @@ class GSMConfig {
 	//@{
 	SDCCHList mSDCCHPool;
 	TCHList mTCHPool;
+	PDTCHList mPDTCHPool;
 	//@}
 
 	/**@name BSIC. */
@@ -93,6 +96,7 @@ class GSMConfig {
 	L2Frame mSI2Frame;
 	L2Frame mSI3Frame;
 	L2Frame mSI4Frame;
+	L2Frame mSI13Frame;
 	//@}
 
 	/**@name Encoded L3 frames to be sent on the SACCH. */
@@ -125,6 +129,7 @@ class GSMConfig {
 	const L2Frame& SI2Frame() const { return mSI2Frame; }
 	const L2Frame& SI3Frame() const { return mSI3Frame; }
 	const L2Frame& SI4Frame() const { return mSI4Frame; }
+	const L2Frame& SI13Frame() const { return mSI13Frame; }
 	//@}
 	/**@name Get references to L3 frames for SACCH SI messages. */
 	//@{
@@ -229,6 +234,22 @@ class GSMConfig {
 	unsigned TCHActive() const;
 	/** Just a reference to the TCH pool. */
 	const TCHList& TCHPool() const { return mTCHPool; }
+	//@}
+
+	/**@name Manage PDTCH Pool. */
+	//@{
+	/** The add method is not mutex protected and should only be used during initialization. */
+	void addPDTCH(PDTCHLogicalChannel *wPDTCH) { mPDTCHPool.push_back(wPDTCH); }
+	/** Return a pointer to a usable channel. */
+	PDTCHLogicalChannel *getPDTCH();
+	/** Return true if an PDTCH is available, but do not allocate it. */
+	size_t PDTCHAvailable() const;
+	/** Return number of total PDTCH. */
+	unsigned PDTCHTotal() const { return mPDTCHPool.size(); }
+	/** Return number of active PDTCH. */
+	unsigned PDTCHActive() const;
+	/** Just a reference to the PDTCH pool. */
+	const PDTCHList& PDTCHPool() const { return mPDTCHPool; }
 	//@}
 
 	/**@name T3122 management */

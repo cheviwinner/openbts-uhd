@@ -569,7 +569,6 @@ std::ostream& operator<<(std::ostream& os, const L2Frame& msg);
 typedef InterthreadQueueWithWait<L2Frame> L2FrameFIFO;
 
 
-
 /**
 	Representation of a GSM L3 message in a bit vector.
 	Bit ordering is MSB-first in each octet.

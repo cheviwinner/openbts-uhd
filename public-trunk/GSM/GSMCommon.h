@@ -204,6 +204,10 @@ enum ChannelType {
 	TCHHType,		///< half-rate traffic
 	AnyTCHType,		///< any TCH type
 	//@}
+	///@name GPRS channels
+	//@{
+	PDTCHType,		///< Packet data traffic channel
+	//@}
 	///@name Special internal channel types.
 	//@{
 	LoopbackFullType,		///< loopback testing

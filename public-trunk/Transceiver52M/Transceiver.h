@@ -86,6 +86,7 @@ private:
     V,                  ///< FCCH+SCH+CCCH+BCCH+SDCCH/4+SACCH/4, uplink RACH+SDCCH/4
     VI,                 ///< CCCH+BCCH, uplink RACH
     VII,                ///< SDCCH/8 + SACCH/8
+    VIII,               ///< GPRS channel combinations
     NONE,               ///< Channel is inactive, default
     LOOPBACK            ///< similar go VII, used in loopback testing
   } ChannelCombination;

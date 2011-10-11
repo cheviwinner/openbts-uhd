@@ -727,6 +727,23 @@ void SACCHL1Decoder::handleGoodFrame()
 	XCCHL1Decoder::handleGoodFrame();
 }
 
+bool PDTCHL1Decoder::processBurst(const RxBurst& inBurst)
+{
+	return XCCHL1Decoder::processBurst(inBurst);
+}
+
+void PDTCHL1Decoder::writeLowSide(const RxBurst& burst)
+{
+	OBJLOG(INFO) <<"PDTCHL1Decoder burst=" << burst.time() << " " << burst.RSSI() << " "
+                                           << burst.data1() << burst.data2() << (burst.Hu()?"1":"0") << (burst.Hl()?"1":"0");
+	XCCHL1Decoder::writeLowSide(burst);
+}
+
+void PDTCHL1Decoder::handleGoodFrame()
+{
+	XCCHL1Decoder::handleGoodFrame();
+}
+
 
 
 
@@ -1022,7 +1039,15 @@ void BCCHL1Encoder::generate()
 		case 1: writeHighSide(gBTS.SI2Frame()); return;
 		case 2: writeHighSide(gBTS.SI3Frame()); return;
 		case 3: writeHighSide(gBTS.SI4Frame()); return;
-		case 4: writeHighSide(gBTS.SI3Frame()); return;
+		case 4: {
+			if (gConfig.getNum("GSM.GPRS")) {
+				writeHighSide(gBTS.SI13Frame());
+			}
+			else {
+				writeHighSide(gBTS.SI3Frame());
+			}
+			return;
+		}
 		case 5: writeHighSide(gBTS.SI2Frame()); return;
 		case 6: writeHighSide(gBTS.SI3Frame()); return;
 		case 7: writeHighSide(gBTS.SI4Frame()); return;
@@ -1483,7 +1508,11 @@ void SACCHL1Decoder::setPhy(const SACCHL1Decoder& other)
 		<< " MSPower=" << mActualMSPower << " MSTiming=" << mActualMSTiming;
 }
 
-
+void PDTCHL1Decoder::open()
+{
+	OBJLOG(DEBUG) << "PDTCHL1Decoder";
+	XCCHL1Decoder::open();
+}
 
 void SACCHL1Encoder::setPhy(float wRSSI, float wTimingError)
 {
@@ -1543,6 +1572,66 @@ void SACCHL1Encoder::open()
 	mOrderedMSTiming = 0;
 }
 
+void GSM::PDTCHL1EncoderRoutine( PDTCHL1Encoder * encoder )
+{
+	while (1) {
+		encoder->dispatch();
+	}
+}
+
+void PDTCHL1Encoder::start()
+{
+	L1Encoder::start();
+	OBJLOG(DEBUG) <<"PDTCHL1Encoder";
+	mEncoderThread.start((void*(*)(void*))PDTCHL1EncoderRoutine,(void*)this);
+}
+
+void PDTCHL1Encoder::open()
+{
+	OBJLOG(DEBUG) <<"PDTCHL1Encoder";
+	XCCHL1Encoder::open();
+}
+
+void PDTCHL1Encoder::dispatch()
+{
+
+	// Let previous data get transmitted.
+	resync();
+	waitToSend();
+
+	// We have no ready data but must send SOMETHING.
+	// RLC/MAC filler with USF=1
+	static const BitVector filler("0100000110010100001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011");
+
+	filler.copyTo(mD);
+	//OBJLOG(INFO) <<"PDTCHL1Encoder filler d[] " << mD.size() << " " << mD;
+	mD.LSB8MSB();
+	//OBJLOG(INFO) <<"PDTCHL1Encoder filler d[] " << mD.size() << " " << mD;
+	encode();
+	//OBJLOG(INFO) <<"PDTCHL1Encoder filler U[] " << mU.size() << " " << mU;
+	//OBJLOG(INFO) <<"PDTCHL1Encoder filler c[] " << mC.size() << " " << mC;
+	
+	interleave();
+
+	// Format the bits into the bursts.
+	// GSM 05.03 4.1.5, 05.02 5.2.3
+
+	for (int B=0; B<4; B++) {
+		mBurst.time(mNextWriteTime);
+		// Copy in the "encrypted" bits, GSM 05.03 4.1.5, 05.02 5.2.3.
+		OBJLOG(DEEPDEBUG) << "PDTCHL1Encoder mI["<<B<<"]=" << mI[B];
+		mI[B].segment(0,57).copyToSegment(mBurst,3);
+		mI[B].segment(57,57).copyToSegment(mBurst,88);
+		// stealing bits
+		//use CS1 now
+		mBurst.Hu(true);
+		mBurst.Hl(true);
+		// Send it to the radio.
+		//OBJLOG(NOTICE) << "PDTCHL1Encoder mBurst=" << mBurst;
+		mDownstream->writeHighSide(mBurst);
+		rollForward();
+	}
+}
 
 
 SACCHL1Encoder* SACCHL1Decoder::SACCHSibling() 
@@ -1550,9 +1639,19 @@ SACCHL1Encoder* SACCHL1Decoder::SACCHSibling()
 	return mSACCHParent->encoder();
 }
 
+PDTCHL1Encoder* PDTCHL1Decoder::PDTCHSibling() 
+{
+	return mPDTCHParent->encoder();
+}
+
 SACCHL1Decoder* SACCHL1Encoder::SACCHSibling() 
 {
 	return mSACCHParent->decoder();
+}
+
+PDTCHL1Decoder* PDTCHL1Encoder::PDTCHSibling() 
+{
+	return mPDTCHParent->decoder();
 }
 
 
@@ -1608,6 +1707,11 @@ void SACCHL1Encoder::sendFrame(const L2Frame& frame)
 	XCCHL1Encoder::sendFrame(frame);
 }
 
+void PDTCHL1Encoder::sendFrame(const L2Frame& frame)
+{
+	OBJLOG(DEEPDEBUG) << "PDTCHL1Encoder " << frame;
+	XCCHL1Encoder::sendFrame(frame);
+}
 
 
 // vim: ts=4 sw=4

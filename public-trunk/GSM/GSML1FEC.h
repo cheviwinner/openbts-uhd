@@ -56,6 +56,9 @@ class GeneratorL1Encoder;
 class SACCHL1Encoder;
 class SACCHL1Decoder;
 class SACCHL1FEC;
+class PDTCHL1Encoder;
+class PDTCHL1Decoder;
+class PDTCHL1FEC;
 class TrafficTranscoder;
 
 
@@ -628,6 +631,52 @@ class SACCHL1Decoder : public XCCHL1Decoder {
 };
 
 
+/**
+	L1 decoder for the PDTCH.
+*/
+class PDTCHL1Decoder : public XCCHL1Decoder {
+
+	private:
+
+	PDTCHL1FEC *mPDTCHParent;
+
+	public:
+
+	PDTCHL1Decoder(
+		unsigned wTN,
+		const TDMAMapping& wMapping,
+		PDTCHL1FEC *wParent)
+		:XCCHL1Decoder(wTN,wMapping,(L1FEC*)wParent),
+		mPDTCHParent(wParent)
+	{ }
+
+	ChannelType channelType() const { return PDTCHType; }
+
+	/** Override open() to set physical parameters with reasonable defaults. */
+	void open();
+
+	/**
+		Override processBurst to catch the physical parameters.
+	*/
+	bool processBurst(const RxBurst&);
+	
+	void writeLowSide(const RxBurst&);
+
+	protected:
+
+	PDTCHL1FEC *PDTCHParent() { return mPDTCHParent; }
+
+	PDTCHL1Encoder* PDTCHSibling();
+
+	/**
+		This is a wrapper on handleGoodFrame that processes the physical header.
+	*/
+	void handleGoodFrame();
+
+	unsigned headerOffset() const { return 16; }
+
+};
+
 
 
 /** L1 encoder used for many control channels -- mostly from GSM 05.03 4.1 */
@@ -1005,7 +1054,49 @@ class SACCHL1Encoder : public XCCHL1Encoder {
 };
 
 
+/**
+	L1 encoder for the PDTCH.
+*/
+class PDTCHL1Encoder : public XCCHL1Encoder {
 
+	private:
+
+	PDTCHL1FEC *mPDTCHParent;
+
+	Thread mEncoderThread;
+
+	friend void PDTCHL1EncoderRoutine( PDTCHL1Encoder * encoder );	
+
+	public:
+
+	PDTCHL1Encoder(unsigned wTN, const TDMAMapping& wMapping, PDTCHL1FEC *wParent)
+		:XCCHL1Encoder(wTN,wMapping,(L1FEC*)wParent),
+		mPDTCHParent(wParent)
+	{}
+
+	void open();
+
+	bool active() const { return true; }
+
+	protected:
+
+	PDTCHL1FEC *PDTCHParent() { return mPDTCHParent; }
+
+	PDTCHL1Decoder *PDTCHSibling();
+
+	void dispatch();
+
+	void start();
+
+	unsigned headerOffset() const { return 16; }
+
+	/** A warpper to send an L2 frame with a physical header.  */
+	virtual void sendFrame(const L2Frame&);
+
+};
+
+/** The C adapter for pthreads. */
+void PDTCHL1EncoderRoutine( PDTCHL1Encoder * encoder );
 
 
 /** The Common Control Channel (CCCH).  Carries the AGCH, NCH, PCH. */
@@ -1128,7 +1219,30 @@ class SACCHL1FEC : public L1FEC {
 };
 
 
+class PDTCHL1FEC : public L1FEC {
 
+	private:
+
+	PDTCHL1Decoder *mPDTCHDecoder;
+	PDTCHL1Encoder *mPDTCHEncoder;
+
+	public:
+
+	PDTCHL1FEC(
+		unsigned wTN,
+		const MappingPair& wMapping)
+		:L1FEC()
+	{
+		mPDTCHEncoder = new PDTCHL1Encoder(wTN,wMapping.downlink(),this);
+		mEncoder = mPDTCHEncoder;
+		mPDTCHDecoder = new PDTCHL1Decoder(wTN,wMapping.uplink(),this);
+		mDecoder = mPDTCHDecoder;
+	}
+
+	PDTCHL1Decoder *decoder() { return mPDTCHDecoder; }
+	PDTCHL1Encoder *encoder() { return mPDTCHEncoder; }
+
+};
 
 
 

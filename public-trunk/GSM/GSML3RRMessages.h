@@ -299,6 +299,7 @@ class L3SystemInformationType2 : public L3RRMessage {
 	- Cell Options (BCCH) 10.5.2.3 M V 1 
 	- Cell Selection Parameters 10.5.2.4 M V 2 
 	- RACH Control Parameters 10.5.2.29 M V 3 
+	- SI 3 Rest Octets 10.5.2.34 M V 4
 */
 class L3SystemInformationType3 : public L3RRMessage {
 
@@ -310,6 +311,7 @@ class L3SystemInformationType3 : public L3RRMessage {
 	L3CellOptionsBCCH mCellOptions;
 	L3CellSelectionParameters mCellSelectionParameters;
 	L3RACHControlParameters mRACHControlParameters;
+	L3SI3RestOctets mSI3RestOctets;
 
 	public:
 
@@ -331,9 +333,19 @@ class L3SystemInformationType3 : public L3RRMessage {
 	void RACHControlParameters(const L3RACHControlParameters& wRACHControlParameters)
 		{ mRACHControlParameters = wRACHControlParameters; }
 
+	void SI3RestOctets(const L3SI3RestOctets& wSI3RestOctets)
+		{ mSI3RestOctets = wSI3RestOctets; }
+
 	int MTI() const { return (int)SystemInformationType3; }
 
-	size_t bodyLength() const { return 16; }
+	size_t bodyLength() const { 
+		if (gConfig.getNum("GSM.GPRS")){
+			return 20;
+		}
+		else {
+			return 16;
+		}
+	}
 	void writeBody(L3Frame &dest, size_t &wp) const;
 	void text(std::ostream&) const;
 };
@@ -449,7 +461,29 @@ class L3SystemInformationType6 : public L3RRMessage {
 	void text(std::ostream&) const;
 };
 
+/**
+	System Information Type 13, GSM 04.08 9.1.43a
+	- SI 13 Rest Octets 10.5.2.37b M V 20
+*/
+class L3SystemInformationType13 : public L3RRMessage {
 
+	private:
+
+	L3SI13RestOctets mSI13RestOctets;
+
+	public:
+
+	L3SystemInformationType13():L3RRMessage() {}
+
+	void SI13RestOctets(const L3SI13RestOctets& wSI13RestOctets)
+		{ mSI13RestOctets = wSI13RestOctets; }
+
+	int MTI() const { return (int)SystemInformationType13; }
+
+	size_t bodyLength() const { return 20; }
+	void writeBody(L3Frame &dest, size_t &wp) const;
+	void text(std::ostream&) const;
+};
 
 
 /** Immediate Assignment, GSM 04.08 9.1.18 */
@@ -457,28 +491,41 @@ class L3ImmediateAssignment : public L3RRMessage {
 
 private:
 
+	bool mGPRS;
 	L3PageMode mPageMode;
 	L3DedicatedModeOrTBF mDedicatedModeOrTBF;
 	L3RequestReference mRequestReference;
 	L3ChannelDescription mChannelDescription;  
 	L3TimingAdvance mTimingAdvance;
+	L3IARestOctets mIARestOctets;
 
 public:
 
-
 	L3ImmediateAssignment(
+				bool wGPRS,
 				const L3RequestReference& wRequestReference,
 				const L3ChannelDescription& wChannelDescription,
-				const L3TimingAdvance& wTimingAdvance = L3TimingAdvance(0))
+				Time wTBF_starting_time,
+				const L3TimingAdvance& wTimingAdvance = L3TimingAdvance(0)
+				)
 		:L3RRMessage(),
+		mGPRS(wGPRS),
+		mDedicatedModeOrTBF(0,0,wGPRS?1:0),
 		mRequestReference(wRequestReference),
 		mChannelDescription(wChannelDescription),
-		mTimingAdvance(wTimingAdvance)
+		mTimingAdvance(wTimingAdvance),
+		mIARestOctets(wTBF_starting_time)		
 	{}
 
 	int MTI() const { return (int)ImmediateAssignment; }
-	size_t bodyLength() const { return 9; }
 
+	size_t bodyLength() const {
+		if (mGPRS) { 
+			return 20;
+		} else {
+			return 9;
+		}
+	}
 	void writeBody(L3Frame &dest, size_t &wp) const;
 	void text(std::ostream&) const;
 

@@ -353,6 +353,28 @@ class SACCHLogicalChannel : public LogicalChannel {
 void *SACCHLogicalChannelServiceLoopAdapter(SACCHLogicalChannel*);
 
 
+/**
+ Packet data traffic channel
+ The packet data traffic channel, used for transfer of traffic 
+ or higher layer signalling RLC/MAC blocks during a TBF.
+*/
+class PDTCHLogicalChannel : public LogicalChannel {
+
+	protected:
+
+	PDTCHL1FEC *mPDTCHL1;
+
+	public:
+
+	PDTCHLogicalChannel(
+		unsigned wTN,
+		const MappingPair& wMapping);
+
+	ChannelType type() const { return PDTCHType; }
+
+	void open();
+
+};
 
 
 

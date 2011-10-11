@@ -317,6 +317,7 @@ void L3SystemInformationType3::writeBody(L3Frame& dest, size_t &wp) const
 	- Cell Options (BCCH) 10.5.2.3 M V 1 
 	- Cell Selection Parameters 10.5.2.4 M V 2 
 	- RACH Control Parameters 10.5.2.29 M V 3 
+	- SI 3 Rest Octets 10.5.2.34 M V 4 
 */
 	mCI.writeV(dest,wp);
 	mLAI.writeV(dest,wp);
@@ -324,6 +325,9 @@ void L3SystemInformationType3::writeBody(L3Frame& dest, size_t &wp) const
 	mCellOptions.writeV(dest,wp);
 	mCellSelectionParameters.writeV(dest,wp);
 	mRACHControlParameters.writeV(dest,wp);
+	if (gConfig.getNum("GSM.GPRS")) {
+		mSI3RestOctets.writeV(dest,wp);
+	}
 }
 
 
@@ -336,6 +340,9 @@ void L3SystemInformationType3::text(ostream& os) const
 	os << " cellOptions=(" << mCellOptions << ")";
 	os << " cellSelectionParameters=(" << mCellSelectionParameters << ")";
 	os << " RACHControlParameters=(" << mRACHControlParameters << ")";
+	if (gConfig.getNum("GSM.GPRS")) {
+		os << " SI3RestOctets=(" << mSI3RestOctets << ")";
+	}
 }
 
 
@@ -409,6 +416,22 @@ void L3SystemInformationType6::text(ostream& os) const
 	os << " NCCPermitted=(" << mNCCPermitted << ")";
 }
 
+void L3SystemInformationType13::writeBody(L3Frame& dest, size_t &wp) const
+{
+/**
+	System Information Type 13, GSM 04.08 9.1.43a
+	- SI 13 Rest Octets 10.5.2.37b M V 20
+*/
+	mSI13RestOctets.writeV(dest,wp);
+}
+
+
+void L3SystemInformationType13::text(ostream& os) const
+{
+	L3RRMessage::text(os);
+	os << " SI13RestOctets=(" << mSI13RestOctets << ")";
+}
+
 
 void L3ImmediateAssignment::writeBody( L3Frame &dest, size_t &wp ) const
 {
@@ -416,8 +439,10 @@ void L3ImmediateAssignment::writeBody( L3Frame &dest, size_t &wp ) const
 - Page Mode 10.5.2.26 M V 1/2 
 - Dedicated mode or TBF 10.5.2.25b M V 1/2 
 - Channel Description 10.5.2.5 C V 3 
+- Packet Channel Description 10.5.2.25a C V 3 
 - Request Reference 10.5.2.30 M V 3 
 - Timing Advance 10.5.2.40 M V 1 
+- IA Rest Octets 10.5.2.16 M V 0-11
 (ignoring optional elements)
 */
 	// reverse order of 1/2-octet fields
@@ -429,6 +454,9 @@ void L3ImmediateAssignment::writeBody( L3Frame &dest, size_t &wp ) const
 	// No mobile allocation in non-hopping systems.
 	// A zero-length LV.  Just write L=0.
 	dest.writeField(wp,0,8);
+	if (mGPRS) {
+		mIARestOctets.writeV(dest, wp);
+	}
 }
 
 
@@ -436,9 +464,17 @@ void L3ImmediateAssignment::text(ostream& os) const
 {
 	os << "PageMode=("<<mPageMode<<")";
 	os << " DedicatedModeOrTBF=("<<mDedicatedModeOrTBF<<")";
-	os << " ChannelDescription=("<<mChannelDescription<<")";
+	if (mGPRS) {
+		os << " ChannelDescription=(";
+	} else {
+		os << " PacketChannelDescription=(";
+	}
+	os << mChannelDescription<<")";
 	os << " RequestReference=("<<mRequestReference<<")";
 	os << " TimingAdvance="<<mTimingAdvance;
+	if (mGPRS) {
+		os << " IARestOctets=("<<mIARestOctets<<")";
+	}
 }
 
 

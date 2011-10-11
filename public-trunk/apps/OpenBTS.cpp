@@ -627,6 +627,17 @@ int main(int argc, char *argv[])
 		sCount++;
 	}
 
+	//GPRS
+	if (gConfig.getNum("GSM.GPRS")) {
+		radio->setSlot(gConfig.getNum("GPRS.TS"),8);
+		for (int i=0; i<1; i++) {
+			PDTCHLogicalChannel* PDTCH = new PDTCHLogicalChannel(gConfig.getNum("GPRS.TS"),gPDTCH_FPair);
+			PDTCH->downstream(radio);
+			PDTCH->open();
+			gBTS.addPDTCH(PDTCH);
+		}
+	}
+
 	/*
 		Note: The number of different paging subchannels on       
 		the CCCH is:                                        
