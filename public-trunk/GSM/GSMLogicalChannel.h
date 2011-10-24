@@ -372,6 +372,10 @@ class PDTCHLogicalChannel : public LogicalChannel {
 
 	ChannelType type() const { return PDTCHType; }
 
+	RLCMACFrame* recvPDCH() { return mPDTCHL1->recvPDCH(); }
+
+	void sendRLCMAC(RLCMACFrame *frame) { return mPDTCHL1->sendRLCMAC(frame); }
+
 	void open();
 
 };

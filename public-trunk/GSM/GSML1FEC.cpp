@@ -741,6 +741,8 @@ void PDTCHL1Decoder::writeLowSide(const RxBurst& burst)
 
 void PDTCHL1Decoder::handleGoodFrame()
 {
+	RLCMACFrame* frame = new RLCMACFrame(mD);
+	mFramesQ.write(frame);
 	XCCHL1Decoder::handleGoodFrame();
 }
 
@@ -1599,18 +1601,27 @@ void PDTCHL1Encoder::dispatch()
 	resync();
 	waitToSend();
 
-	// We have no ready data but must send SOMETHING.
-	// RLC/MAC filler with USF=1
-	static const BitVector filler("0100000110010100001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011");
+	// Send, by priority: (1) PDTCH, (2) filler.
+	if (RLCMACFrame *frame = mRLCMACQ.readNoBlock()) {
+		OBJLOG(NOTICE) <<"PDTCH Encoder " << *frame;
+		frame->LSB8MSB();
+		frame->copyTo(mU);
+		// Encode u[] to c[], GSM 05.03 4.1.2 and 4.1.3.
+		encode();
+		delete frame;
+	} else {
+		// We have no ready data but must send SOMETHING.
+		// RLC/MAC filler with USF=1
+		static const BitVector filler("0100000110010100001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011001010110010101100101011");
+		filler.copyTo(mD);
+		//OBJLOG(INFO) <<"PDTCHL1Encoder filler d[] " << mD.size() << " " << mD;
+		mD.LSB8MSB();
+		//OBJLOG(INFO) <<"PDTCHL1Encoder filler d[] " << mD.size() << " " << mD;
+		encode();
+		//OBJLOG(INFO) <<"PDTCHL1Encoder filler U[] " << mU.size() << " " << mU;
+		//OBJLOG(INFO) <<"PDTCHL1Encoder filler c[] " << mC.size() << " " << mC;
+	}
 
-	filler.copyTo(mD);
-	//OBJLOG(INFO) <<"PDTCHL1Encoder filler d[] " << mD.size() << " " << mD;
-	mD.LSB8MSB();
-	//OBJLOG(INFO) <<"PDTCHL1Encoder filler d[] " << mD.size() << " " << mD;
-	encode();
-	//OBJLOG(INFO) <<"PDTCHL1Encoder filler U[] " << mU.size() << " " << mU;
-	//OBJLOG(INFO) <<"PDTCHL1Encoder filler c[] " << mC.size() << " " << mC;
-	
 	interleave();
 
 	// Format the bits into the bursts.

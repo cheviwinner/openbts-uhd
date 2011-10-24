@@ -640,6 +640,8 @@ class PDTCHL1Decoder : public XCCHL1Decoder {
 
 	PDTCHL1FEC *mPDTCHParent;
 
+	RLCMACFrameFIFO mFramesQ;					///< output queue for PDTCH frames
+
 	public:
 
 	PDTCHL1Decoder(
@@ -661,6 +663,16 @@ class PDTCHL1Decoder : public XCCHL1Decoder {
 	bool processBurst(const RxBurst&);
 	
 	void writeLowSide(const RxBurst&);
+
+	/**
+		Receive a PDTCH frame.
+		Non-blocking.  Returns NULL if queue is dry.
+		Caller is responsible for deleting the returned array.
+	*/
+	RLCMACFrame *recvPDCH() { return mFramesQ.read(15000); }
+
+	/** Return count of internally-queued PDTCH frames. */
+	unsigned queueSize() const { return mFramesQ.size(); }
 
 	protected:
 
@@ -1064,6 +1076,8 @@ class PDTCHL1Encoder : public XCCHL1Encoder {
 	PDTCHL1FEC *mPDTCHParent;
 
 	Thread mEncoderThread;
+	
+	RLCMACFrameFIFO mRLCMACQ;
 
 	friend void PDTCHL1EncoderRoutine( PDTCHL1Encoder * encoder );	
 
@@ -1075,6 +1089,11 @@ class PDTCHL1Encoder : public XCCHL1Encoder {
 	{}
 
 	void open();
+
+	/** Enqueue a RLCMAC frame for transmission. */
+	void sendRLCMAC(RLCMACFrame *frame)
+		{ mRLCMACQ.write(frame); }
+
 
 	bool active() const { return true; }
 
@@ -1239,6 +1258,8 @@ class PDTCHL1FEC : public L1FEC {
 		mDecoder = mPDTCHDecoder;
 	}
 
+	RLCMACFrame* recvPDCH() { return mPDTCHDecoder->recvPDCH(); }
+	void sendRLCMAC(RLCMACFrame *frame) { return mPDTCHEncoder->sendRLCMAC(frame); }
 	PDTCHL1Decoder *decoder() { return mPDTCHDecoder; }
 	PDTCHL1Encoder *encoder() { return mPDTCHEncoder; }
 
