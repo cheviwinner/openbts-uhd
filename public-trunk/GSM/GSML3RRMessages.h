@@ -882,6 +882,72 @@ class L3ClassmarkChange : public L3RRMessage {
 	void text(std::ostream&) const;
 };
 
+class RLCMACDataBlock : public RLCMACBlock {
+
+	protected:
+
+	unsigned mCountdownValue;
+	unsigned mSI;
+	unsigned mR;
+	unsigned mSpare;
+	unsigned mPI;
+	unsigned mTFI;
+	unsigned mTI;
+	unsigned mBSN; 
+	unsigned mE;
+	unsigned mPFI;	
+	uint64_t mTLLI;
+
+	public:
+
+
+	RLCMACDataBlock():RLCMACBlock() { } 
+	
+	size_t bodyLength() const;
+	unsigned CV() const { return mCountdownValue; }
+	unsigned TFI() const { return mTFI; }
+	uint64_t TLLI() { return mTLLI; }
+	protected:
+	void writeBody(RLCMACFrame&, unsigned int&) const {}
+	void parseBody(const RLCMACFrame&, unsigned int&);
+	RLCMACPayloadType payloadType() const { return RLCMACDataBlockType;}
+	void text(std::ostream&) const;
+
+};
+
+RLCMACDataBlock* parseRLCMACDataBlock(const RLCMACFrame& source);
+
+
+
+
+class RLCMACControlBlock : public RLCMACBlock {
+
+	protected:
+
+	unsigned mTFI;
+	uint64_t mTLLI;
+
+	public:
+
+
+	RLCMACControlBlock(unsigned wTFI, uint64_t wTLLI)
+		:RLCMACBlock(),
+		mTFI(wTFI),
+		mTLLI(wTLLI)
+	{} 
+	
+	size_t bodyLength() const;
+	protected:
+	void writeBody(RLCMACFrame&, unsigned int&) const;
+	void parseBody(const RLCMACFrame&, unsigned int&) {}
+	RLCMACPayloadType payloadType() const { return RLCMACControlBlockType1;}
+	void text(std::ostream&) const;
+
+};
+
+//std::ostream& operator<<(std::ostream& os, L3RRMessage::MessageType);
+
+
 
 } // GSM
 

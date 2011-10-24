@@ -54,7 +54,17 @@ void L3Message::parseBody(const L3Frame&, size_t&)
 	assert(0);
 }
 
+void RLCMACBlock::writeBody(RLCMACFrame&,size_t&) const
+{
+	LOG(ERROR) << "not implemented ";
+	assert(0);
+}
 
+void RLCMACBlock::parseBody(const RLCMACFrame&, size_t&)
+{
+	LOG(ERROR) << "not implemented ";
+	assert(0);
+}
 
 
 
@@ -720,5 +730,88 @@ void L3ClassmarkChange::text(ostream& os) const
 	if (mHaveAdditionalClassmark)
 		os << " +classmark=(" << mAdditionalClassmark << ")";
 }
+
+void RLCMACDataBlock::text(ostream& os) const
+{
+	os << "RLCMACDataBlock : ";
+	os << "CountdownValue=("<<mCountdownValue<<") ";
+	os << "SI=("<<mSI<<") ";
+	os << "R=("<<mR<<") ";
+	os << "PI=("<<mPI<<")  ";
+	os << "TFI=("<<mTFI<<") ";
+	os << "TI=("<<mTI<<") ";
+	os << "BSN=("<<mBSN<<") ";
+	os << "E=("<<mE<<") ";
+	os << "PFI=("<<mPFI<<") ";
+	os << "TLLI=("<<hex<<"0x"<<mTLLI<<dec<<" )";
+}
+
+void RLCMACDataBlock::parseBody(const RLCMACFrame& source, size_t& rp)
+{
+	mCountdownValue = source.readField(rp,4);
+	mSI = source.readField(rp,1);
+	mR = source.readField(rp,1);
+	mSpare = source.readField(rp,1);
+	mPI = source.readField(rp,1);
+	mTFI = source.readField(rp,5);
+	mTI = source.readField(rp,1);
+	mBSN = source.readField(rp,7); 
+	mE = source.readField(rp,1);
+	rp+=8;
+	mTLLI = source.readField(rp,8*4);
+	mPFI = source.readField(rp,7);
+}
+
+size_t RLCMACDataBlock::bodyLength() const
+{
+	return 23;
+}
+
+RLCMACDataBlock* GSM::parseRLCMACDataBlock(const RLCMACFrame& source)
+{
+	RLCMACDataBlock *retVal = new RLCMACDataBlock();
+	if (retVal==NULL) return NULL;
+	retVal->parse(source);
+	return retVal;
+}
+
+void RLCMACControlBlock::text(ostream& os) const
+{
+	os << "RLCMACControlBlock : ";
+	os << "TFI=("<<mTFI<<") ";
+	os << "TLLI=("<<hex<<"0x"<<mTLLI<<dec<<" )";
+}
+
+void RLCMACControlBlock::writeBody(RLCMACFrame& dest, size_t& wp) const
+{
+	dest.writeField(wp,0x0,2);  // Uplink block with TDMA framenumber
+	dest.writeField(wp,0x1,1);  // Suppl/Polling Bit
+	dest.writeField(wp,0x1,3);  // Uplink state flag
+	dest.writeField(wp,0x09,6); // MESSAGE TYPE 
+	dest.writeField(wp,0x0,2);  // Page Mode
+	dest.writeField(wp,0x0,2);  
+	dest.writeField(wp,mTFI,5); // Uplink TFI
+	dest.writeField(wp,0x0,1);
+	dest.writeField(wp,0x0,2);  // CS1
+	dest.writeField(wp,0x1,1);  // FINAL_ACK_INDICATION
+	dest.writeField(wp,0x01,7); // STARTING_SEQUENCE_NUMBER
+	// RECEIVE_BLOCK_BITMAP
+	for (unsigned i=0; i<8; i++) {
+		dest.writeField(wp,0xFF,8);
+	}
+	dest.writeField(wp,0x1,1);  // CONTENTION_RESOLUTION_TLLI = present
+	dest.writeField(wp,mTLLI,8*4);
+	dest.writeField(wp,0x00,5); //spare
+	for (unsigned i=0; i<6; i++) {
+		dest.writeField(wp,0x2b,8);
+	}
+}
+
+size_t RLCMACControlBlock::bodyLength() const
+{
+	return 23;
+}
+
+
 
 // vim: ts=4 sw=4
