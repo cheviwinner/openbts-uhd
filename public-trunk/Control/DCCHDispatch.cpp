@@ -193,4 +193,42 @@ void Control::DCCHDispatcher(LogicalChannel *DCCH)
 	}
 }
 
+
+/** Example of a closed-loop, persistent-thread control function for the PDCH. */
+void Control::PDCHDispatcher(LogicalChannel *PDCH)
+{
+	const RLCMACFrame *frame = NULL;
+	while (1) {
+		frame = ((PDTCHLogicalChannel*)PDCH)->recvPDCH();
+		if (!frame) { 
+			delete frame;
+			frame = NULL;			
+			continue;
+		}	
+		LOG(NOTICE) << " PDCH received frame " << *frame;
+		switch (frame->payloadType()) {
+			case RLCMACDataBlockType: {
+				RLCMACBlock* block = parseRLCMAC(*frame);
+				LOG(NOTICE) << " PDCH block " << *block;
+				if (((RLCMACDataBlock*)block)->CV() == 0) {
+					RLCMACControlBlock* ctrlblock = new RLCMACControlBlock(((RLCMACDataBlock*)block)->TFI(), ((RLCMACDataBlock*)block)->TLLI());
+					LOG(NOTICE) << "RLC/MAC Control block " << *ctrlblock;
+					RLCMACFrame *frameCtrl = new RLCMACFrame();
+					ctrlblock->write(*frameCtrl);
+					LOG(NOTICE) << "Send RLC/MAC frame "<< *frameCtrl;
+					((PDTCHLogicalChannel*)PDCH)->sendRLCMAC(frameCtrl);
+					delete ctrlblock;
+				}
+				delete block;
+				}
+				break;
+			// TODO: Dispatchers for RLCMACControlBlockType1 and RLCMACControlBlockType2.
+			default:
+				LOG(NOTICE) << "unhandled RLC/MAC Block Type";
+			}
+		delete frame;
+		frame = NULL;
+	}
+}
+
 // vim: ts=4 sw=4

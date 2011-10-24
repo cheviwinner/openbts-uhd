@@ -633,6 +633,8 @@ int main(int argc, char *argv[])
 		for (int i=0; i<1; i++) {
 			PDTCHLogicalChannel* PDTCH = new PDTCHLogicalChannel(gConfig.getNum("GPRS.TS"),gPDTCH_FPair);
 			PDTCH->downstream(radio);
+			Thread* threadG = new Thread;
+			threadG->start((void*(*)(void*))Control::PDCHDispatcher,PDTCH);
 			PDTCH->open();
 			gBTS.addPDTCH(PDTCH);
 		}

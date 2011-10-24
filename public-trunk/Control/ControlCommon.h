@@ -49,6 +49,7 @@
 namespace GSM {
 class Time;
 class L3Message;
+class RLCMACBlock;
 class GSMConfig;
 class LogicalChannel;
 class SDCCHLogicalChannel;
@@ -231,6 +232,7 @@ void initiateMTTransaction(TransactionEntry& transaction,
 void FACCHDispatcher(GSM::TCHFACCHLogicalChannel *TCHFACCH);
 void SDCCHDispatcher(GSM::SDCCHLogicalChannel *SDCCH);
 void DCCHDispatcher(GSM::LogicalChannel *DCCH);
+void PDCHDispatcher(GSM::LogicalChannel *PDCH);
 //@}
 
 
