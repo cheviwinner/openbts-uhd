@@ -123,6 +123,73 @@ class L3Message {
 };
 
 
+/**
+	This is virtual base class for the blocks of GPRS RLC/MAC layer.
+	It defines almost nothing, but is the origination of other classes.
+*/
+class RLCMACBlock {
+
+	public: 
+
+	virtual ~RLCMACBlock() {}
+
+	/** Return the expected block body length in bytes, not including Payload Type. */
+	virtual size_t bodyLength() const = 0;
+	
+	/** Return the expected block length in bytes, including Payload Type.  */
+	size_t length() const { return 23; }
+
+	/** Return number of BITS needed to hold block.  */
+	size_t bitsNeeded() const { return 8*length(); }
+
+	/**
+	  The parse() method reads and decodes RLC/MAC block bits.
+	  This method invokes parseBody, assuming that the RLC/MAC Payload Type
+	  has already been read.
+	*/
+	virtual void parse(const RLCMACFrame& source);
+
+	/**
+		Write block Payload Type and data bits into a BitVector buffer.
+		This method invokes writeBody.
+	*/
+	virtual void write(RLCMACFrame& dest) const;
+
+	/**
+		Generate an RLCMACFrame for this message.
+		The caller is responsible for deleting the memory.
+	*/
+	RLCMACFrame* frame() const;
+
+	/** Return the RLC/MAC Payload Type. */
+	virtual GSM::RLCMACPayloadType payloadType() const =0;
+
+
+	protected:
+
+	/**
+		Write the RLC/MAC block body, a method defined in some subclasses.
+		If not defined, this will assert at runtime.
+	*/
+	virtual void writeBody(RLCMACFrame& dest, size_t &writePosition) const;
+
+	/**
+		The parseBody() method starts processing at the first byte following the
+		Payload Type in the RLC/MAC block, which the caller indicates with the
+		readPosition argument.
+		If not defined, this will assert at runtime.
+	*/
+	virtual void parseBody(const RLCMACFrame& source, size_t &readPosition);
+
+
+	public:
+
+	/** Generate a human-readable representation of a block. */
+	virtual void text(std::ostream& os) const;
+
+};
+
+
 
 
 /**@name Utility functions for message parsers. */
@@ -161,6 +228,16 @@ L3Message* parseL3(const L3Frame& source);
 std::ostream& operator<<(std::ostream& os, const GSM::L3Message& msg);
 
 
+/**
+	Parse a complete RLC/MAC block into its object type.
+	Caller is responsible for deleting allocated memory.
+	@param source The RLCMAC bits.
+	@return A pointer to a new block or NULL on failure.
+*/
+RLCMACBlock* parseRLCMAC(const RLCMACFrame& source);
+
+
+std::ostream& operator<<(std::ostream& os, const GSM::RLCMACBlock& block);
 
 /**
 	Abstract class used for GSM L3 information elements.

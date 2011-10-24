@@ -80,6 +80,38 @@ void L3Message::text(ostream& os) const
 }
 
 
+void RLCMACBlock::parse(const RLCMACFrame& source)
+{
+	size_t rp = 2;
+	parseBody(source,rp);
+}
+
+
+void RLCMACBlock::write(RLCMACFrame& dest) const
+{
+	dest.resize(23*8); // standard size for RLC/MAC Block 23 octet
+	size_t wp = 0;
+	// write Payload Type 
+	dest.writeField(wp,payloadType(),2);
+	// write the body
+	writeBody(dest,wp);
+}
+
+
+RLCMACFrame* RLCMACBlock::frame() const
+{
+	RLCMACFrame *newFrame = new RLCMACFrame(bitsNeeded());
+	write(*newFrame);
+	return newFrame;
+}
+
+
+
+void RLCMACBlock::text(ostream& os) const
+{
+	os << " PayloadType = " << payloadType();
+}
+
 
 
 
@@ -165,8 +197,38 @@ GSM::L3Message* GSM::parseL3(const GSM::L3Frame& source)
 	return retVal;
 }
 
+ostream& GSM::operator<<(ostream& os, const RLCMACBlock& block)
+{
+	block.text(os);
+	return os;
+}
 
+GSM::RLCMACBlock* GSM::parseRLCMAC(const GSM::RLCMACFrame& source)
+{
+	if (source.size()==0) return NULL;
 
+	LOG(DEBUG) << "GPRS::parseRLCMAC "<< source;
+	RLCMACPayloadType payloadType = source.payloadType();
+	
+	RLCMACBlock *retVal = NULL;
+	switch (payloadType) {
+		case RLCMACDataBlockType:
+			retVal = parseRLCMACDataBlock(source);
+			break;
+		case RLCMACControlBlockType1:
+			//TODO: parse RLCMACControlBlockType1
+			break;
+		case RLCMACControlBlockType2:
+			//TODO: parse RLCMACControlBlockType2
+			break;
+		default:
+			LOG(NOTICE) << "RLC/MAC parsing failed for unsupported block Payload Type" << payloadType;
+			return NULL;
+	}
+
+	if (retVal) LOG(DEBUG) << "RLCMAC recv " << *retVal;
+	return retVal;
+}
 
 
 void L3ProtocolElement::parseLV(const L3Frame& source, size_t &rp)
